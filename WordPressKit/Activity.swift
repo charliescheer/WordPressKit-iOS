@@ -85,7 +85,7 @@ open class Activity {
     }()
 }
 
-private extension Activity {
+internal extension Activity {
     enum Error: Swift.Error {
         case missingActivityId
         case missingSummary
