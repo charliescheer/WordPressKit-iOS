@@ -16,7 +16,7 @@ open class Activity {
     public let items: [ActivityObject]?
     public let content: AnyObject?
 
-    private let rewindable: Bool
+    internal let rewindable: Bool
 
     public init(dictionary: [String: AnyObject]) throws {
         guard let id = dictionary["activity_id"] as? String else {

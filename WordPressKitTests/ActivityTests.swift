@@ -72,6 +72,22 @@ class ActivityTest: XCTestCase {
             XCTAssertEqual(error as NSError, expected)
         }
     }
+    
+    func testInitializingActivitySetsEmptyValuesForMissingKeys() {
+        let activityObject = MockActivityProvider.getActivityDictionary(withOption: .missingDescriptionFields) as [String : AnyObject]
+        
+        do {
+            let activity = try Activity(dictionary: activityObject)
+            
+            XCTAssertEqual(activity.name, "")
+            XCTAssertEqual(activity.type, "")
+            XCTAssertEqual(activity.gridicon, "")
+            XCTAssertEqual(activity.status, "")
+            XCTAssertEqual(activity.rewindable, false)
+        } catch {
+            XCTFail("Should not be called")
+        }
+    }
 }
 
 struct MockActivityProvider {
@@ -123,6 +139,12 @@ struct MockActivityProvider {
                 activityObject.removeValue(forKey: "published")
             case .publishDateIncorrectFormat:
                 activityObject["published"] = "2017-10-24T15:16:38"
+            case .missingDescriptionFields:
+                activityObject.removeValue(forKey: "name")
+                activityObject.removeValue(forKey: "type")
+                activityObject.removeValue(forKey: "gridicon")
+                activityObject.removeValue(forKey: "status")
+                activityObject.removeValue(forKey: "is_rewindable")
             }
         }
         return activityObject
@@ -135,4 +157,5 @@ enum ActivityProviderOptions {
     case missingContentText
     case missingPublishDate
     case publishDateIncorrectFormat
+    case missingDescriptionFields
 }
